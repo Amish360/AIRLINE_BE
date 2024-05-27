@@ -16,6 +16,25 @@ import random
 from .models import CustomUser, OTPRequest
 from .serializers import CustomUserSerializer, OTPRequestSerializer, OTPVerificationSerializer, PasswordResetSerializer, PasswordResetConfirmSerializer
 
+
+class CustomUserRegistration(generics.CreateAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+
+        user = serializer.instance
+        refresh = RefreshToken.for_user(user)
+
+        response_data = {
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+        }
+        return Response(response_data, status=status.HTTP_201_CREATED)
+
 # Utility function to generate OTP
 def generate_otp():
     return str(random.randint(100000, 999999))
