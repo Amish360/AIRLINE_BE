@@ -1,0 +1,84 @@
+[
+    {
+        "model": "flights_api.airport",
+        "pk": 1,
+        "fields": {
+            "code": "JFK",
+            "name": "John F. Kennedy International Airport",
+            "city": "New York",
+            "country": "USA"
+        }
+    },
+    {
+        "model": "flights_api.airport",
+        "pk": 2,
+        "fields": {
+            "code": "LHR",
+            "name": "Heathrow Airport",
+            "city": "London",
+            "country": "UK"
+        }
+    },
+    {
+        "model": "flights_api.airline",
+        "pk": 1,
+        "fields": {
+            "name": "Delta Air Lines",
+            "code": "DL"
+        }
+    },
+    {
+        "model": "flights_api.airline",
+        "pk": 2,
+        "fields": {
+            "name": "British Airways",
+            "code": "BA"
+        }
+    },
+    {
+        "model": "flights_api.aircraft",
+        "pk": 1,
+        "fields": {
+            "model": "737",
+            "manufacturer": "Boeing",
+            "capacity": 200
+        }
+    },
+    {
+        "model": "flights_api.aircraft",
+        "pk": 2,
+        "fields": {
+            "model": "A320",
+            "manufacturer": "Airbus",
+            "capacity": 180
+        }
+    },
+    {
+        "model": "flights_api.flight",
+        "pk": 1,
+        "fields": {
+            "flight_number": "DL123",
+            "airline": 1,
+            "aircraft": 1,
+            "origin": 1,
+            "destination": 2,
+            "scheduled_departure": "2024-05-25T14:30:00Z",
+            "scheduled_arrival": "2024-05-25T18:30:00Z",
+            "status": "Scheduled"
+        }
+    },
+    {
+        "model": "flights_api.flight",
+        "pk": 2,
+        "fields": {
+            "flight_number": "BA456",
+            "airline": 2,
+            "aircraft": 2,
+            "origin": 2,
+            "destination": 1,
+            "scheduled_departure": "2024-05-25T10:00:00Z",
+            "scheduled_arrival": "2024-05-25T14:00:00Z",
+            "status": "Scheduled"
+        }
+    }
+]

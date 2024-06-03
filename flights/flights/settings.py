@@ -38,7 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'flights_api',
-    'rest_framework'
+    'rest_framework',
+    'corsheaders',
+    'rest_framework_simplejwt',
+    'user_api'
 ]
 
 MIDDLEWARE = [
@@ -49,7 +52,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'flights.urls'
 
@@ -69,6 +76,40 @@ TEMPLATES = [
     },
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+}
+
+import datetime
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": datetime.timedelta(hours=1),  # Adjust as needed
+    "SLIDING_TOKEN_REFRESH_LIFETIME": datetime.timedelta(days=7),
+    "SLIDING_TOKEN_LIFETIME": datetime.timedelta(days=14),
+    "SLIDING_TOKEN_REFRESH_GRACE_PERIOD": datetime.timedelta(days=1),
+    "SLIDING_TOKEN_VERIFYING_PERIOD": datetime.timedelta(days=30),
+}
+
+
+AUTHENTICATION_BACKENDS = [
+    "user_api.custom_auth_backends.EmailBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
+
+
+
 WSGI_APPLICATION = 'flights.wsgi.application'
 
 
@@ -76,12 +117,15 @@ WSGI_APPLICATION = 'flights.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "flight",
+        "USER": "root",
+        "PASSWORD": "Toorjr16",
+        "HOST": "localhost",  # Use 'localhost' for local development
+        "PORT": "",  # Leave empty for default MySQL port (3306)
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -123,3 +167,13 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+AUTH_USER_MODEL = "user_api.CustomUser"
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp-mail.outlook.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'amishtoor@hotmail.com'
+EMAIL_HOST_PASSWORD = 'Toorjr16'

@@ -1,8 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import User
-
+from django.conf import settings
 class Airport(models.Model):
-    code = models.CharField(max_length=10, unique=True)  # IATA or ICAO code
+    code = models.CharField(max_length=10)  # IATA or ICAO code
     name = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
     country = models.CharField(max_length=255)
@@ -12,7 +11,7 @@ class Airport(models.Model):
 
 class Airline(models.Model):
     name = models.CharField(max_length=255)
-    code = models.CharField(max_length=10, unique=True)  # IATA or ICAO code
+    code = models.CharField(max_length=10)  # IATA or ICAO code
 
     def __str__(self):
         return self.name
@@ -57,6 +56,6 @@ class FlightStatus(models.Model):
 
 
 class Booking(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     flight = models.ForeignKey(Flight, on_delete=models.CASCADE)
     booked_on = models.DateTimeField(auto_now_add=True)
