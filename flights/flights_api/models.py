@@ -55,7 +55,3 @@ class FlightStatus(models.Model):
         return f"Status of {self.flight}"
 
 
-class Booking(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    flight = models.ForeignKey(Flight, on_delete=models.CASCADE)
-    booked_on = models.DateTimeField(auto_now_add=True)
